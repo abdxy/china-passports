@@ -15,7 +15,7 @@
         <!-- Advanced Filters -->
         <div class="bg-white p-4 shadow-sm ring-1 ring-gray-900/5 sm:rounded-lg">
             <form action="{{ route('passports.index') }}" method="GET"
-                class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-5 items-end">
+                class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-6 items-end">
 
                 <!-- Search -->
                 <div>
@@ -75,7 +75,19 @@
                     </select>
                 </div>
 
-                <div class="lg:col-span-5 flex justify-end gap-2 mt-2">
+                <!-- Payment Status -->
+                <div>
+                    <label for="payment_status" class="block text-xs font-medium text-gray-700 mb-1">حالة الدفع</label>
+                    <select name="payment_status" id="payment_status"
+                        class="block w-full rounded-md border-0 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-china-red sm:text-sm sm:leading-6">
+                        <option value="">الكل</option>
+                        <option value="paid" {{ request('payment_status') == 'paid' ? 'selected' : '' }}>مدفوع</option>
+                        <option value="not_paid" {{ request('payment_status') == 'not_paid' ? 'selected' : '' }}>غير مدفوع
+                        </option>
+                    </select>
+                </div>
+
+                <div class="lg:col-span-6 flex justify-end gap-2 mt-2">
                     <a href="{{ route('passports.index') }}"
                         class="rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50">إعادة
                         تعيين</a>
@@ -96,6 +108,7 @@
                             <th scope="col" class="px-3 py-3.5 text-right text-sm font-semibold text-gray-900">رقم الجواز
                             </th>
                             <th scope="col" class="px-3 py-3.5 text-right text-sm font-semibold text-gray-900">الحالة</th>
+                            <th scope="col" class="px-3 py-3.5 text-right text-sm font-semibold text-gray-900">الدفع</th>
                             <th scope="col" class="px-3 py-3.5 text-right text-sm font-semibold text-gray-900">
                                 الشركة/المندوب</th>
                             <th scope="col" class="relative py-3.5 pr-3 pl-4 sm:pl-6">
@@ -136,6 +149,16 @@
                                     </span>
                                 </td>
                                 <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                                    @if($passport->payment_status === 'paid')
+                                        <span
+                                            class="inline-flex items-center rounded-md bg-green-50 px-2 py-1 text-xs font-medium text-green-700 ring-1 ring-inset ring-green-600/20">مدفوع</span>
+                                    @else
+                                        <span
+                                            class="inline-flex items-center rounded-md bg-red-50 px-2 py-1 text-xs font-medium text-red-700 ring-1 ring-inset ring-red-600/20">غير
+                                            مدفوع</span>
+                                    @endif
+                                </td>
+                                <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                                     @if($passport->company)
                                         <span
                                             class="inline-flex items-center rounded-md bg-white px-2 py-1 text-xs font-medium text-gray-700 ring-1 ring-inset ring-gray-700/10">
@@ -159,7 +182,7 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="5" class="px-6 py-4 text-center text-gray-500">لا توجد جوازات.</td>
+                                <td colspan="6" class="px-6 py-4 text-center text-gray-500">لا توجد جوازات.</td>
                             </tr>
                         @endforelse
                     </tbody>
