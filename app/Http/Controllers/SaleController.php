@@ -23,9 +23,14 @@ class SaleController extends Controller
             });
         }
 
-        $sales = $query->latest()->paginate(20);
+        if ($request->filled('city')) {
+            $query->where('city', $request->city);
+        }
 
-        return view('sales.index', compact('sales'));
+        $sales = $query->latest()->paginate(20)->withQueryString();
+        $cities = config('iraq_cities');
+
+        return view('sales.index', compact('sales', 'cities'));
     }
 
     public function create()

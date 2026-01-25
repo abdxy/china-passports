@@ -21,9 +21,14 @@ class CompanyController extends Controller
             $query->where('name', 'like', "%{$request->search}%");
         }
 
-        $companies = $query->latest()->paginate(20);
+        if ($request->filled('city')) {
+            $query->where('city', $request->city);
+        }
 
-        return view('companies.index', compact('companies'));
+        $companies = $query->latest()->paginate(20)->withQueryString();
+        $cities = config('iraq_cities');
+
+        return view('companies.index', compact('companies', 'cities'));
     }
 
     public function create()

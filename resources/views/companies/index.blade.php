@@ -12,6 +12,33 @@
             </div>
         </div>
 
+        <!-- Filter Form -->
+        <div class="bg-white p-4 shadow-sm ring-1 ring-gray-900/5 sm:rounded-lg">
+            <form action="{{ route('companies.index') }}" method="GET" class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 items-end">
+                <!-- Search -->
+                <div>
+                   <label for="search" class="block text-xs font-medium text-gray-700 mb-1">بحث</label>
+                   <input type="text" name="search" id="search" value="{{ request('search') }}" placeholder="اسم الشركة..." class="block w-full rounded-md border-0 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-china-red sm:text-sm sm:leading-6">
+               </div>
+
+                <!-- City -->
+                <div>
+                   <label for="city" class="block text-xs font-medium text-gray-700 mb-1">المدينة</label>
+                   <select name="city" id="city" class="block w-full rounded-md border-0 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-china-red sm:text-sm sm:leading-6">
+                      <option value="">الكل</option>
+                      @foreach($cities as $key => $label)
+                          <option value="{{ $key }}" {{ request('city') == $key ? 'selected' : '' }}>{{ $label }}</option>
+                      @endforeach
+                  </select>
+              </div>
+
+               <div class="flex justify-end gap-2">
+                   <a href="{{ route('companies.index') }}" class="rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50">إعادة تعيين</a>
+                   <button type="submit" class="rounded-md bg-china-red px-3 py-2 text-sm font-bold text-white shadow-sm hover:bg-china-dark focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-china-red transition-all">تطبيق</button>
+               </div>
+           </form>
+       </div>
+
         <div class="bg-white shadow-sm ring-1 ring-gray-900/5 sm:rounded-lg overflow-hidden">
             <div class="overflow-x-auto">
                 <table class="min-w-full divide-y divide-gray-300">
