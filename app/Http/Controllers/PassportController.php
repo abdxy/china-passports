@@ -31,20 +31,41 @@ class PassportController extends Controller
             $query->where('status', $request->status);
         }
 
+        // Company Filter
+        if ($request->filled('company_id')) {
+            $query->where('company_id', $request->company_id);
+        }
+
+        // Sale Agent Filter
+        if ($request->filled('sale_id')) {
+            $query->where('sale_id', $request->sale_id);
+        }
+
+        // City Filter (Check both Company and Sale relations)
+        if ($request->filled('city')) {
+            $city = $request->city;
+            $query->where(function ($q) use ($city) {
+                $q->whereHas('company', function ($c) use ($city) {
+                    $c->where('city', $city);
+                })->orWhereHas('sale', function ($s) use ($city) {
+                    $s->where('city', $city);
+                });
+            });
+        }
+
         // Payment Status Filter
         if ($request->filled('payment_status')) {
             $query->where('payment_status', $request->payment_status);
         }
 
-        // Role Restrictions?
-        // Admin: all (done)
-        // Data Entry: all (done)
-        // Visa Applier: only show? "visa applier only show passworts as show only" involves read-only access.
-        // If Finance: "finince on reports". Maybe they can see list too.
-
         $passports = $query->latest()->paginate(20)->withQueryString();
 
-        return view('passports.index', compact('passports'));
+        // Data for Filters
+        $companies = Company::all();
+        $sales = \App\Models\Sale::all();
+        $cities = config('iraq_cities');
+
+        return view('passports.index', compact('passports', 'companies', 'sales', 'cities'));
     }
 
     /**
@@ -58,7 +79,8 @@ class PassportController extends Controller
         }
 
         $companies = Company::all();
-        return view('passports.create', compact('companies'));
+        $sales = \App\Models\Sale::all();
+        return view('passports.create', compact('companies', 'sales'));
     }
 
     /**
@@ -110,7 +132,8 @@ class PassportController extends Controller
         }
 
         $companies = Company::all();
-        return view('passports.edit', compact('passport', 'companies'));
+        $sales = \App\Models\Sale::all();
+        return view('passports.edit', compact('passport', 'companies', 'sales'));
     }
 
     /**

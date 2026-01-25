@@ -12,17 +12,76 @@
             </div>
         </div>
 
-        <!-- Search & Filters -->
+        <!-- Advanced Filters -->
         <div class="bg-white p-4 shadow-sm ring-1 ring-gray-900/5 sm:rounded-lg">
-            <form action="{{ route('passports.index') }}" method="GET" class="flex gap-4">
-                <div class="flex-1">
-                    <input type="text" name="search" value="{{ request('search') }}"
-                        placeholder="بحث بالاسم أو رقم الجواز..."
+            <form action="{{ route('passports.index') }}" method="GET"
+                class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-5 items-end">
+
+                <!-- Search -->
+                <div>
+                    <label for="search" class="block text-xs font-medium text-gray-700 mb-1">بحث</label>
+                    <input type="text" name="search" id="search" value="{{ request('search') }}"
+                        placeholder="الاسم أو رقم الجواز..."
                         class="block w-full rounded-md border-0 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-china-red sm:text-sm sm:leading-6">
                 </div>
+
+                <!-- Status -->
                 <div>
+                    <label for="status" class="block text-xs font-medium text-gray-700 mb-1">الحالة</label>
+                    <select name="status" id="status"
+                        class="block w-full rounded-md border-0 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-china-red sm:text-sm sm:leading-6">
+                        <option value="">الكل</option>
+                        @foreach(['applied' => 'تم التقديم', 'rejected' => 'مرفوض', 'waiting_reciveing_passport' => 'بانتظار استلام الجواز', 'sent_to_jordan' => 'أرسلت للأردن', 'in_embassy' => 'في السفارة', 'sent_to_iraq' => 'أرسلت للعراق'] as $val => $label)
+                            <option value="{{ $val }}" {{ request('status') == $val ? 'selected' : '' }}>{{ $label }}</option>
+                        @endforeach
+                    </select>
+                </div>
+
+                <!-- Company -->
+                <div>
+                    <label for="company_id" class="block text-xs font-medium text-gray-700 mb-1">الشركة</label>
+                    <select name="company_id" id="company_id"
+                        class="block w-full rounded-md border-0 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-china-red sm:text-sm sm:leading-6">
+                        <option value="">الكل</option>
+                        @foreach($companies as $company)
+                            <option value="{{ $company->id }}" {{ request('company_id') == $company->id ? 'selected' : '' }}>
+                                {{ $company->name }}</option>
+                        @endforeach
+                    </select>
+                </div>
+
+                <!-- Sale Agent -->
+                <div>
+                    <label for="sale_id" class="block text-xs font-medium text-gray-700 mb-1">المندوب</label>
+                    <select name="sale_id" id="sale_id"
+                        class="block w-full rounded-md border-0 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-china-red sm:text-sm sm:leading-6">
+                        <option value="">الكل</option>
+                        @foreach($sales as $sale)
+                            <option value="{{ $sale->id }}" {{ request('sale_id') == $sale->id ? 'selected' : '' }}>
+                                {{ $sale->name }}</option>
+                        @endforeach
+                    </select>
+                </div>
+
+                <!-- City -->
+                <div>
+                    <label for="city" class="block text-xs font-medium text-gray-700 mb-1">المدينة</label>
+                    <select name="city" id="city"
+                        class="block w-full rounded-md border-0 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-china-red sm:text-sm sm:leading-6">
+                        <option value="">الكل</option>
+                        @foreach($cities as $key => $label)
+                            <option value="{{ $key }}" {{ request('city') == $key ? 'selected' : '' }}>{{ $label }}</option>
+                        @endforeach
+                    </select>
+                </div>
+
+                <div class="lg:col-span-5 flex justify-end gap-2 mt-2">
+                    <a href="{{ route('passports.index') }}"
+                        class="rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50">إعادة
+                        تعيين</a>
                     <button type="submit"
-                        class="rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50">بحث</button>
+                        class="rounded-md bg-china-red px-3 py-2 text-sm font-bold text-white shadow-sm hover:bg-china-dark focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-china-red transition-all">تطبيق
+                        الفلاتر</button>
                 </div>
             </form>
         </div>
@@ -77,7 +136,21 @@
                                     </span>
                                 </td>
                                 <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                                    {{ $passport->company ? $passport->company->name : ($passport->sale ? $passport->sale->name : '-') }}
+                                    @if($passport->company)
+                                        <span
+                                            class="inline-flex items-center rounded-md bg-white px-2 py-1 text-xs font-medium text-gray-700 ring-1 ring-inset ring-gray-700/10">
+                                            {{ $passport->company->name }}
+                                            ({{ config('iraq_cities.' . $passport->company->city, $passport->company->city) }})
+                                        </span>
+                                    @elseif($passport->sale)
+                                        <span
+                                            class="inline-flex items-center rounded-md bg-white px-2 py-1 text-xs font-medium text-gray-700 ring-1 ring-inset ring-gray-700/10">
+                                            {{ $passport->sale->name }}
+                                            ({{ config('iraq_cities.' . $passport->sale->city, $passport->sale->city) }})
+                                        </span>
+                                    @else
+                                        -
+                                    @endif
                                 </td>
                                 <td class="relative whitespace-nowrap py-4 pr-3 pl-4 text-left text-sm font-medium sm:pl-6">
                                     <a href="{{ route('passports.edit', $passport) }}"
