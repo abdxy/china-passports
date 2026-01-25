@@ -35,8 +35,7 @@
             this.uploading = false;
         });
     }
-}" class="col-span-1">
-    <label class="block text-sm font-medium leading-6 text-gray-900">{{ $label }}</label>
+}">
     <div class="mt-2 flex justify-center rounded-lg border border-dashed border-gray-900/25 px-6 py-10"
         :class="url ? 'border-blue-500 bg-blue-50' : ''">
         <template x-if="!url">
