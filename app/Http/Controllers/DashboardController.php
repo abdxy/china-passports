@@ -23,19 +23,34 @@ class DashboardController extends Controller
         $totalPaid = Passport::where('payment_status', 'paid')->count();
         $totalUnpaid = Passport::where('payment_status', 'not_paid')->count();
 
-        // "Companies debit to company"?
-        // Assuming "unpaid passports" * price = debit?
-        // Let's sum price of unpaid passports grouped by company?
-        // Or "Companies debit to company" means how much Companies OWE US (the Agency).
-        // Yes, unpaid passports.
+        // Count for Sales Agents (needed for dashboard)
+        $totalSales = Sale::count();
+
+        // Count for Companies (needed for dashboard)
+        $totalCompanies = Company::count();
+
+        // "Companies debit to company" logic
         $companiesDebit = Company::withSum([
             'passports' => function ($query) {
                 $query->where('payment_status', 'not_paid');
             }
-        ], 'price')->get();
+        ], 'price')
+            ->get()
+            ->map(function ($company) {
+                $company->total_unpaid = $company->passports_sum_price ?? 0;
+                $company->unpaid_count = $company->passports()->where('payment_status', 'not_paid')->count();
+                return $company;
+            })
+            ->filter(function ($company) {
+                return $company->total_unpaid > 0;
+            })
+            ->values();
 
         // Total Debit
         $totalDebit = Passport::where('payment_status', 'not_paid')->sum('price');
+
+        // Passports by Status
+        $passportsByStatus = Passport::selectRaw('status, count(*) as count')->groupBy('status')->get();
 
 
         // Payment Distribution (Paid Passports)
@@ -62,16 +77,21 @@ class DashboardController extends Controller
             $netProfitTotal += ($passport->price - $shipping - $iraqAgent - $saleCommission);
         }
 
-        return view('dashboard', compact(
-            'totalPassports',
-            'totalPaid',
-            'totalUnpaid',
-            'companiesDebit',
-            'totalDebit',
-            'shippingTotal',
-            'iraqAgentTotal',
-            'salesCommissionTotal',
-            'netProfitTotal'
-        ));
+        $stats = [
+            'total_passports' => $totalPassports,
+            'total_paid' => $totalPaid,
+            'total_unpaid' => $totalUnpaid,
+            'total_sales' => $totalSales,
+            'total_companies' => $totalCompanies,
+            'total_debit' => $totalDebit,
+            'shipping_total' => $shippingTotal,
+            'iraq_agent_total' => $iraqAgentTotal,
+            'sales_commission_total' => $salesCommissionTotal,
+            'total_profit' => $netProfitTotal,
+            'companies_debit' => $companiesDebit,
+            'passports_by_status' => $passportsByStatus
+        ];
+
+        return view('dashboard', compact('stats'));
     }
 }
