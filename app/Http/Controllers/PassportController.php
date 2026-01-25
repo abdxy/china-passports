@@ -100,14 +100,17 @@ class PassportController extends Controller
             'personal_image_url' => 'nullable|url',
             'old_visa_url' => 'nullable|url',
             'have_china_previous_visa' => 'boolean',
-            'status' => 'required|in:applied,rejected,waiting_reciveing_passport,sent_to_jordan,in_embassy,sent_to_iraq',
-            'payment_status' => 'required|in:not_paid,paid',
-            // Price is handled by Model or can be overridden? 
-            // "price 1200 if first time, 900 if have old visa". 
-            // Let's rely on model observer default, but allow override if passed?
-            // User didn't ask for price override in form, but it's good practice. 
-            // For now, let's rely on model logic unless we add an input for it.
+            // 'status' => 'required|in:applied,rejected,waiting_reciveing_passport,sent_to_jordan,in_embassy,sent_to_iraq',
+            // 'payment_status' => 'required|in:not_paid,paid',
         ]);
+
+        $validated['status'] = 'applied';
+        $validated['payment_status'] = 'not_paid';
+
+        // Ensure boolean is set if missing (checkbox handling)
+        if (!isset($validated['have_china_previous_visa'])) {
+            $validated['have_china_previous_visa'] = false;
+        }
 
         Passport::create($validated);
 
