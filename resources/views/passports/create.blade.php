@@ -110,6 +110,12 @@
                             <label class="block text-sm font-medium text-gray-900">التأشيرة السابقة (إن وجدت)</label>
                             @include('passports.partials.file-upload', ['name' => 'old_visa_url', 'id' => 'old_visa_url'])
                         </div>
+
+                        <!-- Empty Page Passport -->
+                        <div class="col-span-1">
+                            <label class="block text-sm font-medium text-gray-900">صفحة الجواز الفارغة</label>
+                            @include('passports.partials.file-upload', ['name' => 'empty_page_passport_url', 'id' => 'empty_page_passport_url'])
+                        </div>
                     </div>
                 </div>
 

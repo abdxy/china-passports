@@ -83,7 +83,8 @@
                                         <option value="">اختر المندوب</option>
                                         @foreach($sales as $sale)
                                             <option value="{{ $sale->id }}" {{ $passport->sale_id == $sale->id ? 'selected' : '' }}>
-                                                {{ $sale->name }}</option>
+                                                {{ $sale->name }}
+                                            </option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -164,6 +165,12 @@
                         <div class="col-span-1">
                             <label class="block text-sm font-medium text-gray-900">التأشيرة السابقة</label>
                             @include('passports.partials.file-upload-edit', ['name' => 'old_visa_url', 'id' => 'old_visa_url', 'currentValue' => $passport->old_visa_url])
+                        </div>
+
+                        <!-- Empty Page Passport -->
+                        <div class="col-span-1">
+                            <label class="block text-sm font-medium text-gray-900">صفحة الجواز الفارغة</label>
+                            @include('passports.partials.file-upload-edit', ['name' => 'empty_page_passport_url', 'id' => 'empty_page_passport_url', 'currentValue' => $passport->empty_page_passport_url])
                         </div>
                     </div>
                 </div>

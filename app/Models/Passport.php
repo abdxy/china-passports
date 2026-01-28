@@ -9,11 +9,13 @@ class Passport extends Model
 {
     protected $fillable = [
         'company_id',
+        'sale_id',
         'full_name',
         'passport_id',
         'passport_image_url',
         'personal_image_url',
         'old_visa_url',
+        'empty_page_passport_url',
         'have_china_previous_visa',
         'status',
         'price',
