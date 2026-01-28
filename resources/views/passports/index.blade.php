@@ -4,12 +4,14 @@
     <div class="space-y-6">
         <div class="sm:flex sm:items-center sm:justify-between">
             <h2 class="text-2xl font-bold leading-7 text-gray-900 sm:truncate sm:tracking-tight font-sans">الجوازات</h2>
-            <div class="mt-4 sm:ml-4 sm:mt-0 sm:flex-none">
-                <a href="{{ route('passports.create') }}"
-                    class="block rounded-md bg-china-red px-4 py-2 text-center text-sm font-bold text-white shadow-sm hover:bg-china-dark focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-china-red transition-all">
-                    إضافة جواز
-                </a>
-            </div>
+            @if(in_array(auth()->user()->role, ['admin', 'data_entry']))
+                <div class="mt-4 sm:ml-4 sm:mt-0 sm:flex-none">
+                    <a href="{{ route('passports.create') }}"
+                        class="block rounded-md bg-china-red px-4 py-2 text-center text-sm font-bold text-white shadow-sm hover:bg-china-dark focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-china-red transition-all">
+                        إضافة جواز
+                    </a>
+                </div>
+            @endif
         </div>
 
         <!-- Advanced Filters -->
