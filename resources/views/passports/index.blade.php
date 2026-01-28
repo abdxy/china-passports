@@ -175,9 +175,13 @@
                                         -
                                     @endif
                                 </td>
-                                <td class="relative whitespace-nowrap py-4 pr-3 pl-4 text-left text-sm font-medium sm:pl-6">
-                                    <a href="{{ route('passports.edit', $passport) }}"
-                                        class="text-china-dark hover:text-china-red">تعديل</a>
+                                <td class="relative whitespace-nowrap py-4 pr-3 pl-4 text-left text-sm font-medium sm:pl-6 space-x-3 space-x-reverse">
+                                    <a href="{{ route('passports.show', $passport) }}"
+                                        class="text-blue-600 hover:text-blue-900">عرض</a>
+                                    @if(in_array(auth()->user()->role, ['admin', 'data_entry']))
+                                        <a href="{{ route('passports.edit', $passport) }}"
+                                            class="text-china-dark hover:text-china-red">تعديل</a>
+                                    @endif
                                 </td>
                             </tr>
                         @empty
