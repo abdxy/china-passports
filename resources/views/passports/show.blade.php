@@ -126,10 +126,14 @@
                         <!-- Passport Image -->
                         <div class="text-center">
                             <dt class="text-sm font-medium text-gray-500 mb-2">صورة الجواز</dt>
-                            @if($passport->passport_image_url)
-                                <a href="{{ $passport->passport_image_url }}" target="_blank" class="block">
-                                    <img src="{{ $passport->passport_image_url }}" alt="صورة الجواز" 
+                            @if($passport->passport_image_signed_url)
+                                <a href="{{ $passport->passport_image_signed_url }}" target="_blank" class="block">
+                                    <img src="{{ $passport->passport_image_signed_url }}" alt="صورة الجواز" 
                                         class="h-32 w-full object-cover rounded-lg border border-gray-200 hover:opacity-75 transition-opacity">
+                                </a>
+                                <a href="{{ $passport->passport_image_signed_url }}" download class="mt-2 inline-flex items-center text-xs text-blue-600 hover:text-blue-800">
+                                    <svg class="w-3 h-3 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+                                    تحميل
                                 </a>
                             @else
                                 <div class="h-32 w-full bg-gray-100 rounded-lg border border-gray-200 flex items-center justify-center">
@@ -141,10 +145,14 @@
                         <!-- Personal Image -->
                         <div class="text-center">
                             <dt class="text-sm font-medium text-gray-500 mb-2">الصورة الشخصية</dt>
-                            @if($passport->personal_image_url)
-                                <a href="{{ $passport->personal_image_url }}" target="_blank" class="block">
-                                    <img src="{{ $passport->personal_image_url }}" alt="الصورة الشخصية" 
+                            @if($passport->personal_image_signed_url)
+                                <a href="{{ $passport->personal_image_signed_url }}" target="_blank" class="block">
+                                    <img src="{{ $passport->personal_image_signed_url }}" alt="الصورة الشخصية" 
                                         class="h-32 w-full object-cover rounded-lg border border-gray-200 hover:opacity-75 transition-opacity">
+                                </a>
+                                <a href="{{ $passport->personal_image_signed_url }}" download class="mt-2 inline-flex items-center text-xs text-blue-600 hover:text-blue-800">
+                                    <svg class="w-3 h-3 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+                                    تحميل
                                 </a>
                             @else
                                 <div class="h-32 w-full bg-gray-100 rounded-lg border border-gray-200 flex items-center justify-center">
@@ -156,10 +164,14 @@
                         <!-- Old Visa -->
                         <div class="text-center">
                             <dt class="text-sm font-medium text-gray-500 mb-2">التأشيرة السابقة</dt>
-                            @if($passport->old_visa_url)
-                                <a href="{{ $passport->old_visa_url }}" target="_blank" class="block">
-                                    <img src="{{ $passport->old_visa_url }}" alt="التأشيرة السابقة" 
+                            @if($passport->old_visa_signed_url)
+                                <a href="{{ $passport->old_visa_signed_url }}" target="_blank" class="block">
+                                    <img src="{{ $passport->old_visa_signed_url }}" alt="التأشيرة السابقة" 
                                         class="h-32 w-full object-cover rounded-lg border border-gray-200 hover:opacity-75 transition-opacity">
+                                </a>
+                                <a href="{{ $passport->old_visa_signed_url }}" download class="mt-2 inline-flex items-center text-xs text-blue-600 hover:text-blue-800">
+                                    <svg class="w-3 h-3 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+                                    تحميل
                                 </a>
                             @else
                                 <div class="h-32 w-full bg-gray-100 rounded-lg border border-gray-200 flex items-center justify-center">
@@ -171,10 +183,14 @@
                         <!-- Empty Page Passport -->
                         <div class="text-center">
                             <dt class="text-sm font-medium text-gray-500 mb-2">صفحة الجواز الفارغة</dt>
-                            @if($passport->empty_page_passport_url)
-                                <a href="{{ $passport->empty_page_passport_url }}" target="_blank" class="block">
-                                    <img src="{{ $passport->empty_page_passport_url }}" alt="صفحة الجواز الفارغة" 
+                            @if($passport->empty_page_passport_signed_url)
+                                <a href="{{ $passport->empty_page_passport_signed_url }}" target="_blank" class="block">
+                                    <img src="{{ $passport->empty_page_passport_signed_url }}" alt="صفحة الجواز الفارغة" 
                                         class="h-32 w-full object-cover rounded-lg border border-gray-200 hover:opacity-75 transition-opacity">
+                                </a>
+                                <a href="{{ $passport->empty_page_passport_signed_url }}" download class="mt-2 inline-flex items-center text-xs text-blue-600 hover:text-blue-800">
+                                    <svg class="w-3 h-3 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+                                    تحميل
                                 </a>
                             @else
                                 <div class="h-32 w-full bg-gray-100 rounded-lg border border-gray-200 flex items-center justify-center">
