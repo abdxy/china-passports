@@ -1,5 +1,6 @@
 <div x-data="{ 
     url: '{{ $value ?? $currentValue ?? '' }}', 
+    previewUrl: '{{ $signedValue ?? $currentValue ?? '' }}',
     uploading: false, 
     progress: 0, 
     error: null,
@@ -28,6 +29,7 @@
         })
         .then(data => {
             this.url = data.url;
+            this.previewUrl = data.signed_url || data.url;
             this.uploading = false;
         })
         .catch(err => {
@@ -61,9 +63,10 @@
 
         <template x-if="url">
             <div class="text-center w-full">
-                <img :src="url" class="mx-auto h-32 object-contain mb-2 rounded-md" alt="Preview">
-                <a :href="url" target="_blank" class="text-sm text-blue-600 hover:underline break-all" x-text="url"></a>
-                <button type="button" @click="url = ''"
+                <img :src="previewUrl" class="mx-auto h-32 object-contain mb-2 rounded-md" alt="Preview">
+                <a :href="previewUrl" target="_blank" class="text-sm text-blue-600 hover:underline break-all"
+                    x-text="url"></a>
+                <button type="button" @click="url = ''; previewUrl = ''"
                     class="mt-2 block w-full text-xs text-red-500 hover:text-red-700">Remove & Upload New</button>
             </div>
         </template>

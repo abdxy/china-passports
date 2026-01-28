@@ -152,25 +152,25 @@
                         <!-- Passport Image -->
                         <div class="col-span-1">
                             <label class="block text-sm font-medium text-gray-900">صورة الجواز</label>
-                            @include('passports.partials.file-upload-edit', ['name' => 'passport_image_url', 'id' => 'passport_image_url', 'currentValue' => $passport->passport_image_url])
+                            @include('passports.partials.file-upload-edit', ['name' => 'passport_image_url', 'id' => 'passport_image_url', 'currentValue' => $passport->passport_image_url, 'signedValue' => $passport->passport_image_signed_url])
                         </div>
 
                         <!-- Personal Image -->
                         <div class="col-span-1">
                             <label class="block text-sm font-medium text-gray-900">الصورة الشخصية</label>
-                            @include('passports.partials.file-upload-edit', ['name' => 'personal_image_url', 'id' => 'personal_image_url', 'currentValue' => $passport->personal_image_url])
+                            @include('passports.partials.file-upload-edit', ['name' => 'personal_image_url', 'id' => 'personal_image_url', 'currentValue' => $passport->personal_image_url, 'signedValue' => $passport->personal_image_signed_url])
                         </div>
 
                         <!-- Old Visa -->
                         <div class="col-span-1">
                             <label class="block text-sm font-medium text-gray-900">التأشيرة السابقة</label>
-                            @include('passports.partials.file-upload-edit', ['name' => 'old_visa_url', 'id' => 'old_visa_url', 'currentValue' => $passport->old_visa_url])
+                            @include('passports.partials.file-upload-edit', ['name' => 'old_visa_url', 'id' => 'old_visa_url', 'currentValue' => $passport->old_visa_url, 'signedValue' => $passport->old_visa_signed_url])
                         </div>
 
                         <!-- Empty Page Passport -->
                         <div class="col-span-1">
                             <label class="block text-sm font-medium text-gray-900">صفحة الجواز الفارغة</label>
-                            @include('passports.partials.file-upload-edit', ['name' => 'empty_page_passport_url', 'id' => 'empty_page_passport_url', 'currentValue' => $passport->empty_page_passport_url])
+                            @include('passports.partials.file-upload-edit', ['name' => 'empty_page_passport_url', 'id' => 'empty_page_passport_url', 'currentValue' => $passport->empty_page_passport_url, 'signedValue' => $passport->empty_page_passport_signed_url])
                         </div>
                     </div>
                 </div>

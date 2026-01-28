@@ -49,7 +49,17 @@ class UploadController extends Controller
 
             Log::info('Upload success', ['path' => $path, 'url' => $url]);
 
-            return response()->json(['url' => $url]);
+            $signedUrl = $url;
+            try {
+                $signedUrl = $disk->temporaryUrl($path, now()->addMinutes(60));
+            } catch (\Exception $e) {
+                // Keep original URL if signing fails
+            }
+
+            return response()->json([
+                'url' => $url,
+                'signed_url' => $signedUrl
+            ]);
         } catch (S3Exception $e) {
             Log::error('S3 Exception: ' . $e->getAwsErrorMessage(), [
                 'code' => $e->getAwsErrorCode(),
