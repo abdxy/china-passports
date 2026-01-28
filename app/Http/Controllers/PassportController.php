@@ -93,15 +93,15 @@ class PassportController extends Controller
         }
 
         $validated = $request->validate([
-            'company_id' => 'required|exists:companies,id',
+            'company_id' => 'nullable|exists:companies,id',
+            'sale_id' => 'nullable|exists:sales,id',
             'full_name' => 'required|string|max:255',
             'passport_id' => 'required|string|max:255',
             'passport_image_url' => 'nullable|url',
             'personal_image_url' => 'nullable|url',
             'old_visa_url' => 'nullable|url',
+            'empty_page_passport_url' => 'nullable|url',
             'have_china_previous_visa' => 'boolean',
-            // 'status' => 'required|in:applied,rejected,waiting_reciveing_passport,sent_to_jordan,in_embassy,sent_to_iraq',
-            // 'payment_status' => 'required|in:not_paid,paid',
         ]);
 
         $validated['status'] = 'applied';
@@ -149,12 +149,14 @@ class PassportController extends Controller
         }
 
         $validated = $request->validate([
-            'company_id' => 'required|exists:companies,id',
+            'company_id' => 'nullable|exists:companies,id',
+            'sale_id' => 'nullable|exists:sales,id',
             'full_name' => 'required|string|max:255',
             'passport_id' => 'required|string|max:255',
             'passport_image_url' => 'nullable|url',
             'personal_image_url' => 'nullable|url',
             'old_visa_url' => 'nullable|url',
+            'empty_page_passport_url' => 'nullable|url',
             'have_china_previous_visa' => 'boolean',
             'status' => 'required|in:applied,rejected,waiting_reciveing_passport,sent_to_jordan,in_embassy,sent_to_iraq',
             'payment_status' => 'required|in:not_paid,paid',
