@@ -58,13 +58,18 @@
                             {{ $statusLabels[$passport->status] ?? $passport->status }}
                         </span>
                     </div>
-                    <div class="flex items-center gap-x-3">
-                        <span class="text-sm font-medium text-gray-600">حالة الدفع:</span>
-                        <span class="inline-flex items-center rounded-full px-3 py-1 text-sm font-medium 
-                            {{ $passport->payment_status === 'paid' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' }}">
-                            {{ $passport->payment_status === 'paid' ? 'مدفوع' : 'غير مدفوع' }}
-                        </span>
+                </div>
+                @if(in_array(auth()->user()->role, ['admin', 'finance']))
+                    <div class="flex items-center justify-between border-t border-gray-200/50 mt-3 pt-3">
+                        <div class="flex items-center gap-x-3">
+                            <span class="text-sm font-medium text-gray-600">حالة الدفع:</span>
+                            <span class="inline-flex items-center rounded-full px-3 py-1 text-sm font-medium 
+                                {{ $passport->payment_status === 'paid' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' }}">
+                                {{ $passport->payment_status === 'paid' ? 'مدفوع' : 'غير مدفوع' }}
+                            </span>
+                        </div>
                     </div>
+                @endif
                 </div>
             </div>
 
@@ -89,10 +94,12 @@
                                 {{ $passport->have_china_previous_visa ? 'نعم' : 'لا' }}
                             </dd>
                         </div>
-                        <div>
-                            <dt class="text-sm font-medium text-gray-500">السعر</dt>
-                            <dd class="mt-1 text-lg font-semibold text-gray-900">{{ number_format($passport->price) }} دينار</dd>
-                        </div>
+                        @if(in_array(auth()->user()->role, ['admin', 'finance']))
+                            <div>
+                                <dt class="text-sm font-medium text-gray-500">السعر</dt>
+                                <dd class="mt-1 text-lg font-semibold text-gray-900">{{ number_format($passport->price) }} دينار</dd>
+                            </div>
+                        @endif
                     </dl>
                 </div>
 

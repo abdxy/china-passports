@@ -110,7 +110,9 @@
                             <th scope="col" class="px-3 py-3.5 text-right text-sm font-semibold text-gray-900">رقم الجواز
                             </th>
                             <th scope="col" class="px-3 py-3.5 text-right text-sm font-semibold text-gray-900">الحالة</th>
-                            <th scope="col" class="px-3 py-3.5 text-right text-sm font-semibold text-gray-900">الدفع</th>
+                            @if(in_array(auth()->user()->role, ['admin', 'finance']))
+                                <th scope="col" class="px-3 py-3.5 text-right text-sm font-semibold text-gray-900">الدفع</th>
+                            @endif
                             <th scope="col" class="px-3 py-3.5 text-right text-sm font-semibold text-gray-900">
                                 الشركة/المندوب</th>
                             <th scope="col" class="relative py-3.5 pr-3 pl-4 sm:pl-6">
@@ -150,16 +152,18 @@
                                         {{ $statusLabels[$passport->status] ?? $passport->status }}
                                     </span>
                                 </td>
-                                <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                                    @if($passport->payment_status === 'paid')
-                                        <span
-                                            class="inline-flex items-center rounded-md bg-green-50 px-2 py-1 text-xs font-medium text-green-700 ring-1 ring-inset ring-green-600/20">مدفوع</span>
-                                    @else
-                                        <span
-                                            class="inline-flex items-center rounded-md bg-red-50 px-2 py-1 text-xs font-medium text-red-700 ring-1 ring-inset ring-red-600/20">غير
-                                            مدفوع</span>
-                                    @endif
-                                </td>
+                                @if(in_array(auth()->user()->role, ['admin', 'finance']))
+                                    <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                                        @if($passport->payment_status === 'paid')
+                                            <span
+                                                class="inline-flex items-center rounded-md bg-green-50 px-2 py-1 text-xs font-medium text-green-700 ring-1 ring-inset ring-green-600/20">مدفوع</span>
+                                        @else
+                                            <span
+                                                class="inline-flex items-center rounded-md bg-red-50 px-2 py-1 text-xs font-medium text-red-700 ring-1 ring-inset ring-red-600/20">غير
+                                                مدفوع</span>
+                                        @endif
+                                    </td>
+                                @endif
                                 <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                                     @if($passport->company)
                                         <span
