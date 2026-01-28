@@ -69,8 +69,7 @@ return [
             'endpoint' => 'https://' . env('DO_SPACES_REGION') . '.digitaloceanspaces.com',
             'url' => env('DO_SPACES_ENDPOINT'),
             'use_path_style_endpoint' => false,
-            'throw' => false,
-            'visibility' => 'public',
+            'throw' => true,
         ],
 
     ],

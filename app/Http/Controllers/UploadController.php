@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
+use Aws\S3\Exception\S3Exception;
 
 class UploadController extends Controller
 {
@@ -17,18 +19,48 @@ class UploadController extends Controller
         $file = $request->file('file');
         $filename = Str::uuid() . '.' . $file->getClientOriginalExtension();
 
-        // Store on 'do' disk
-        $path = $request->file('file')->storePubliclyAs(
-            'uploads',
-            $filename,
-            'do'
-        );
+        try {
+            // Get disk config for debugging
+            $diskConfig = config('filesystems.disks.do');
+            Log::info('DO Disk config', [
+                'key' => substr($diskConfig['key'] ?? 'null', 0, 8) . '...',
+                'region' => $diskConfig['region'] ?? 'null',
+                'bucket' => $diskConfig['bucket'] ?? 'null',
+                'endpoint' => $diskConfig['endpoint'] ?? 'null',
+            ]);
 
-        // Generate URL
-        // If the 'url' config is set correctly, this should work. 
-        // If not, we might need to manually construct it if Storage::url() returns something relative or wrong.
-        $url = Storage::disk('do')->url($path);
+            // Try to put file with explicit options
+            $disk = Storage::disk('do');
+            $path = 'uploads/' . $filename;
 
-        return response()->json(['url' => $url]);
+            $result = $disk->put($path, file_get_contents($file->getRealPath()));
+
+            if (!$result) {
+                Log::error('Upload failed: put returned false', [
+                    'path' => $path,
+                    'file_size' => $file->getSize(),
+                ]);
+                return response()->json(['error' => 'Upload failed - storage returned false'], 500);
+            }
+
+            // Construct URL manually
+            $endpoint = config('filesystems.disks.do.url');
+            $url = rtrim($endpoint, '/') . '/' . $path;
+
+            Log::info('Upload success', ['path' => $path, 'url' => $url]);
+
+            return response()->json(['url' => $url]);
+        } catch (S3Exception $e) {
+            Log::error('S3 Exception: ' . $e->getAwsErrorMessage(), [
+                'code' => $e->getAwsErrorCode(),
+                'request_id' => $e->getAwsRequestId(),
+            ]);
+            return response()->json(['error' => 'S3 Error: ' . $e->getAwsErrorMessage()], 500);
+        } catch (\Exception $e) {
+            Log::error('Upload exception: ' . $e->getMessage(), [
+                'trace' => $e->getTraceAsString()
+            ]);
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
     }
 }
