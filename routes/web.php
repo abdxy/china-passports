@@ -30,5 +30,6 @@ Route::middleware('auth')->group(function () {
     Route::resource('sales', SaleController::class);
     Route::resource('companies', CompanyController::class);
     Route::resource('passports', PassportController::class);
+    Route::patch('/passports/{passport}/status', [PassportController::class, 'updateStatus'])->name('passports.updateStatus');
 
 });

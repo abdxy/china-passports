@@ -184,4 +184,27 @@ class PassportController extends Controller
 
         return redirect()->route('passports.index')->with('success', 'Passport deleted successfully.');
     }
+
+    /**
+     * Update only the status of a passport (for visa_applier role).
+     */
+    public function updateStatus(Request $request, Passport $passport)
+    {
+        // Allow admin, data_entry, and visa_applier to update status
+        if (!in_array(Auth::user()->role, ['admin', 'data_entry', 'visa_applier'])) {
+            abort(403);
+        }
+
+        $validated = $request->validate([
+            'status' => 'required|in:applied,rejected,waiting_reciveing_passport,sent_to_jordan,in_embassy,sent_to_iraq',
+        ]);
+
+        $passport->update(['status' => $validated['status']]);
+
+        if ($request->ajax() || $request->wantsJson()) {
+            return response()->json(['success' => true, 'status' => $validated['status']]);
+        }
+
+        return redirect()->route('passports.index')->with('success', 'تم تحديث حالة الجواز بنجاح.');
+    }
 }
