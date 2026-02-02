@@ -238,7 +238,7 @@
 
         <!-- Modal -->
         <div class="flex min-h-full items-center justify-center p-4">
-            <div class="relative transform overflow-hidden rounded-lg bg-white px-4 pb-4 pt-5 text-right shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg sm:p-6"
+            <div class="relative transform overflow-hidden rounded-lg bg-white px-4 pb-4 pt-5 text-right shadow-xl transition-all w-full max-w-md sm:p-6"
                 @click.away="open = false">
                 
                 <div class="sm:flex sm:items-start">
