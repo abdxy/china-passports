@@ -257,9 +257,12 @@
                     <label class="block text-sm font-medium text-gray-700 mb-2">الحالة الجديدة</label>
                     <select x-model="currentStatus" 
                         class="block w-full rounded-md border-0 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-china-red sm:text-sm sm:leading-6">
-                        <template x-for="(label, value) in statusLabels" :key="value">
-                            <option :value="value" x-text="label" :selected="currentStatus === value"></option>
-                        </template>
+                        <option value="applied">تم التقديم</option>
+                        <option value="rejected">مرفوض</option>
+                        <option value="waiting_reciveing_passport">بانتظار استلام الجواز</option>
+                        <option value="sent_to_jordan">أرسلت للأردن</option>
+                        <option value="in_embassy">في السفارة</option>
+                        <option value="sent_to_iraq">أرسلت للعراق</option>
                     </select>
                 </div>
 
